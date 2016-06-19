@@ -1,0 +1,32 @@
+#play{
+	-fx-background-image: url("paused.png");
+	-fx-background-size: 44.0px;
+	-fx-size: 44.0px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 90.0%;
+    -fx-border-style: none;
+    -fx-min-height: 44.0px;
+    -fx-min-width: 44.0px;
+    -fx-background-insets: 0.0, 0.0, 1.0, 2.0;
+	-fx-border-width: 0.0;
+	-fx-background-color: transparent ;
+	
+	
+}
+#play:pressed{
+		-fx-background-image: url("pause.png");
+}
+
+#stop{
+	-fx-background-image: url("stop.png");
+	-fx-background-size: 44.0px;
+	-fx-size: 44.0px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 90.0%;
+    -fx-border-style: none;
+    -fx-min-height: 44.0px;
+    -fx-min-width: 44.0px;
+    -fx-background-insets: 0.0, 0.0, 1.0, 2.0;
+	-fx-background-color: transparent ;
+
+}

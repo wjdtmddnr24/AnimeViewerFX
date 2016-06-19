@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.media.MediaView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.geometry.Insets?>
+
+<GridPane xmlns:fx="http://javafx.com/fxml" minHeight="300"
+	vgap="10">
+	<MediaView fx:id="player" GridPane.rowIndex="0"
+		GridPane.columnIndex="0" />
+	<BorderPane GridPane.rowIndex="1">
+		<center>
+			<Slider fx:id="progress" />
+		</center>
+		<right>
+			<HBox>
+				<padding>
+					<Insets left="5" right="5" />
+				</padding>
+				<Text fx:id="totalTime" />
+			</HBox>
+		</right>
+
+	</BorderPane>
+	<BorderPane GridPane.rowIndex="2" GridPane.columnIndex="0">
+		<left>
+			<HBox>
+				<padding>
+					<Insets left="5" right="5" />
+				</padding>
+				<Button id="play" />
+				<Button id="stop" />
+			</HBox>
+		</left>
+
+
+		<right>
+			<HBox>
+				<padding>
+					<Insets left="5" right="5" top="10" bottom="5" />
+				</padding>
+				<Text fx:id="totalVolume" />
+				<Slider fx:id="volume" />
+			</HBox>
+		</right>
+	</BorderPane>
+
+
+</GridPane>
