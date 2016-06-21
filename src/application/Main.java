@@ -183,7 +183,7 @@ public class Main extends Application {
 			Parent root = FXMLLoader.load(getClass().getResource("mediaviewer.fxml"));
 			// Parent root =
 			// fxmlLoader.load(getClass().getResource("mediaviewer.fxml").openStream());
-			Scene scene = new Scene(root, 1280, 840);
+			Scene scene = new Scene(root, 1280, 810);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
 			totaltime = (Text) scene.lookup("#totalTime");
