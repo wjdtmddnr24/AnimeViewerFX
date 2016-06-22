@@ -16,10 +16,13 @@ import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
 import javafx.scene.Parent;
@@ -30,6 +33,8 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -44,7 +49,7 @@ import javafx.scene.media.Track;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.text.Text;
 
-public class Main extends Application {
+public class Main {
 	MediaView mediaView;
 	MediaPlayer player;
 	Duration duration;
@@ -52,15 +57,23 @@ public class Main extends Application {
 	Text totaltime, totalVolume;
 	Button play, stop;
 	Stage primaryStage;
+	String folderName;
+	String fileName;
+	String host;
 
 	public void setupMedia(MediaView mediaView, String mediaURL) {
 		Media media = new Media(mediaURL);
-
+		mediaView.setPreserveRatio(true);
+		DoubleProperty mvw = mediaView.fitWidthProperty();
+		DoubleProperty mvh = mediaView.fitHeightProperty();
+		mvw.bind(Bindings.selectDouble(mediaView.sceneProperty(), "width"));
+		mvh.bind(Bindings.selectDouble(mediaView.sceneProperty(), "height"));
 		if (player != null && player.getStatus().compareTo(MediaPlayer.Status.DISPOSED) != 0) {
 			player.dispose();
 		}
 		player = new MediaPlayer(media);
 		player.play();
+
 		duration = media.getDuration();
 		primaryStage.setTitle(media.getSource());
 		setProgress(progressBar);
@@ -175,12 +188,11 @@ public class Main extends Application {
 		return menu;
 	}
 
-	@Override
-	public void start(Stage primaryStage) {
+	public void start() {
 		try {
-			this.primaryStage = primaryStage;
+			primaryStage = new Stage();
 			Parent root = FXMLLoader.load(getClass().getResource("mediaviewer.fxml"));
-			Scene scene = new Scene(root, 1280, 810);
+			Scene scene = new Scene(root, 1280, 825);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
 			totaltime = (Text) scene.lookup("#totalTime");
@@ -190,23 +202,66 @@ public class Main extends Application {
 			mediaView = (MediaView) scene.lookup("#player");
 			play = (Button) scene.lookup("#play");
 			stop = (Button) scene.lookup("#stop");
+			/* 오프라인 미디어 플레이어 사용시 초기 설정 */
+			mediaView.setFitHeight(720);
+			scene.lookup("#skin").setOnKeyPressed(new EventHandler<KeyEvent>() {
+				@Override
+				public void handle(KeyEvent event) {
+					if (event.getCode().equals(KeyCode.ENTER)) {
+						if (primaryStage.isFullScreen()) {
+							primaryStage.setFullScreen(false);
+						} else {
+							primaryStage.setFullScreen(true);
+						}
+					}
+					if (event.getCode().equals(KeyCode.SPACE)) {
+						toggleMediaPlayer();
+						updateValues();
+					}
 
-			String url1 = "http://wjdtmddnr24.dyndns.org/%EC%95%A0%EB%8B%88/Gochuumon%20wa%20Usagi%20Desu%20ka%20S2/HorribleSubs%20Gochuumon%20wa%20Usagi%20Desu%20ka%20S2%20-%2001%201080p.mp4";
-			String url2 = "http://wjdtmddnr24.dyndns.org/%EB%8F%99%EC%98%81%EC%83%81/%ED%8B%B0%EB%B9%84%ED%94%8C/TEKKEN%20SEE%20THIS.mp4";
-			String url3 = "http://wjdtmddnr24.dyndns.org/%EB%8F%99%EC%98%81%EC%83%81/PRIMAL%C3%97HEARTS%20OP%20-%20primal%20(320kbps).mp4";
-			String surl = "http://wjdtmddnr24.dyndns.org/%EC%B6%94%EA%B0%80%EC%A4%91%20%EC%95%A0%EB%8B%88/Subete%20ga%20F%20ni%20Naru/HorribleSubs%20Subete%20ga%20F%20ni%20Naru%20-%2004%201080p.mkv";
+				}
 
-			mediaView.setPreserveRatio(true);
-			DoubleProperty mvw = mediaView.fitWidthProperty();
-			DoubleProperty mvh = mediaView.fitHeightProperty();
-			mvw.bind(Bindings.selectDouble(mediaView.sceneProperty(), "width"));
-			mvh.bind(Bindings.selectDouble(mediaView.sceneProperty(), "height"));
+			});
+			/*
+			 * String url1 =
+			 * "http://wjdtmddnr24.dyndns.org/%EC%95%A0%EB%8B%88/Gochuumon%20wa%20Usagi%20Desu%20ka%20S2/HorribleSubs%20Gochuumon%20wa%20Usagi%20Desu%20ka%20S2%20-%2001%201080p.mp4";
+			 * String url2 =
+			 * "http://wjdtmddnr24.dyndns.org/%EB%8F%99%EC%98%81%EC%83%81/%ED%8B%B0%EB%B9%84%ED%94%8C/TEKKEN%20SEE%20THIS.mp4";
+			 * String url3 =
+			 * "http://wjdtmddnr24.dyndns.org/%EB%8F%99%EC%98%81%EC%83%81/PRIMAL%C3%97HEARTS%20OP%20-%20primal%20(320kbps).mp4";
+			 * String surl =
+			 * "http://wjdtmddnr24.dyndns.org/%EC%B6%94%EA%B0%80%EC%A4%91%20%EC%95%A0%EB%8B%88/Subete%20ga%20F%20ni%20Naru/HorribleSubs%20Subete%20ga%20F%20ni%20Naru%20-%2004%201080p.mkv";
+			 */
 
-			setupMedia(mediaView, url2);
+			if (host != null && folderName != null && fileName != null) {
+				BorderPane background = (BorderPane) scene.lookup("#skin");
+				String url = host + "/" + folderName + "/" + fileName;
+				url = url.replaceAll(" ", "%20");
+				background.setBackground(new Background(
+						new BackgroundImage(new Image((host + "/" + folderName + "/poster.jpg").replaceAll(" ", "%20")),
+								BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+								BackgroundSize.DEFAULT)));
+
+				System.out.println(url.substring(54));
+
+				setupMedia(mediaView, url);
+			} else {
+				// MediaPlayer player = new MediaPlayer(null);
+				// this.player = player;
+				// mediaView.setMediaPlayer(player);
+			}
 
 			MenuBar menuBar = (MenuBar) scene.lookup("#menu");
 			menuBar.getMenus().add(createMenu());
+			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
+				@Override
+				public void handle(WindowEvent event) {
+					System.out.println("closing...");
+					player.dispose();
+
+				}
+			});
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
@@ -269,7 +324,15 @@ public class Main extends Application {
 		}
 	}
 
-	public static void main(String[] args) {
-		launch(args);
+	public Main() {
+		start();
 	}
+
+	public Main(String host, String folderName, String fileName) {
+		this.host = host;
+		this.folderName = folderName;
+		this.fileName = fileName;
+		start();
+	}
+
 }

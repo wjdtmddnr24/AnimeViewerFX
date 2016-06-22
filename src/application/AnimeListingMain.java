@@ -22,6 +22,7 @@ import org.json.simple.parser.ParseException;
 
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -29,6 +30,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.Image;
@@ -58,6 +60,15 @@ public class AnimeListingMain extends Application {
 			scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 			scrollPane.prefWidthProperty().bind(scene.widthProperty());
 			scrollPane.prefHeightProperty().bind(scene.heightProperty());
+			Button button = (Button) scene.lookup("#LocalButton");
+			button.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					new Main();
+				}
+			});
+			
 			if (animations != null) {
 				GridPane gridPane = new GridPane();
 				gridPane.setVgap(15);
@@ -71,7 +82,7 @@ public class AnimeListingMain extends Application {
 							+ animations.get(i).getDir() + "/poster.jpg").replaceAll(" ", "%20"));
 					imageView.setFitHeight(600);
 					imageView.setFitWidth(400);
-					System.out.println("http://wjdtmddnr24.dyndns.org/%EC%95%A0%EB%8B%88/" + animations.get(i).getDir()
+					System.out.println("http://wjdtmddnr24.dyndns.org/%EC%95%A0%EB%8B%88" + animations.get(i).getDir()
 							+ "/poster.jpg");
 					Text text = new Text(animations.get(i).getDir());
 					text.setLayoutX(150);
@@ -94,14 +105,19 @@ public class AnimeListingMain extends Application {
 						}
 					});
 					gridPane.add(borderPane, i % 3, j);
+					primaryStage.setScene(scene);
+					primaryStage.show();
 				}
 				scrollPane.setContent(gridPane);
 				gridPane.prefWidthProperty().bind(scrollPane.widthProperty());
 				gridPane.prefHeightProperty().bind(scrollPane.heightProperty());
+			}else{
+				System.out.println("ASdf");
+			//	primaryStage.close();
+				new Main();
 			}
-
-			primaryStage.setScene(scene);
-			primaryStage.show();
+		
+		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -14,6 +14,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -26,7 +27,7 @@ import javafx.stage.Stage;
 
 public class AnimeFileOpener {
 
-	public AnimeFileOpener(String folderName, List<String> directory) {
+	public AnimeFileOpener(final String folderName, List<String> directory) {
 		Collections.sort(directory, new Comparator<String>() {
 			@Override
 			public int compare(String arg0, String arg1) {
@@ -46,7 +47,7 @@ public class AnimeFileOpener {
 
 		GridPane gridPane = new GridPane();
 
-		ListView<String> list = new ListView<String>();
+		final ListView<String> list = new ListView<String>();
 		ObservableList<String> items = FXCollections.observableArrayList();
 		for (int i = 0; i < directory.size(); i++) {
 			String dir = directory.get(i);
@@ -57,6 +58,16 @@ public class AnimeFileOpener {
 
 		}
 		list.setItems(items);
+		list.setOnMouseClicked(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent mouseEvent) {
+							if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+								if (mouseEvent.getClickCount() == 2) {
+								new Main("http://wjdtmddnr24.dyndns.org/%EC%95%A0%EB%8B%88" ,folderName,list.getSelectionModel().getSelectedItem());
+								}
+							}
+						}
+					});
 		borderPane.setCenter(list);
 		root.getChildren().add(borderPane);
 		Scene scene = new Scene(root, 800, 600);
