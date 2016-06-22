@@ -150,15 +150,15 @@ public class Main extends Application {
 	}
 
 	public Menu createMenu() {
-		Menu menu = new Menu("∆ƒ¿œ");
-		MenuItem openFile = new MenuItem("ø≠±‚");
-		MenuItem closeProject = new MenuItem("≥°≥ª±‚");
+		Menu menu = new Menu("ÌååÏùº");
+		MenuItem openFile = new MenuItem("Ïó¥Í∏∞");
+		MenuItem closeProject = new MenuItem("Îã´Í∏∞");
 		openFile.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				FileChooser fileChooser = new FileChooser();
 				fileChooser.setTitle("Open Resource File");
-				fileChooser.getExtensionFilters().add(new ExtensionFilter("Video ∆ƒ¿œ", "*.mp4", "*.avi", "*.wmv"));
+				fileChooser.getExtensionFilters().add(new ExtensionFilter("Video ÎèôÏòÅÏÉÅ", "*.mp4", "*.avi", "*.wmv"));
 				File selectedFile = fileChooser.showOpenDialog(primaryStage);
 				setupMedia(mediaView, selectedFile.toURI().toASCIIString());
 			}
@@ -178,11 +178,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			FXMLLoader fxmlLoader = new FXMLLoader();
 			this.primaryStage = primaryStage;
 			Parent root = FXMLLoader.load(getClass().getResource("mediaviewer.fxml"));
-			// Parent root =
-			// fxmlLoader.load(getClass().getResource("mediaviewer.fxml").openStream());
 			Scene scene = new Scene(root, 1280, 810);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
@@ -194,13 +191,11 @@ public class Main extends Application {
 			play = (Button) scene.lookup("#play");
 			stop = (Button) scene.lookup("#stop");
 
-			String localurl = new File("C:\\Users\\¡§\\Downloads\\ouji.mp4").toURI().toASCIIString();
 			String url1 = "http://wjdtmddnr24.dyndns.org/%EC%95%A0%EB%8B%88/Gochuumon%20wa%20Usagi%20Desu%20ka%20S2/HorribleSubs%20Gochuumon%20wa%20Usagi%20Desu%20ka%20S2%20-%2001%201080p.mp4";
 			String url2 = "http://wjdtmddnr24.dyndns.org/%EB%8F%99%EC%98%81%EC%83%81/%ED%8B%B0%EB%B9%84%ED%94%8C/TEKKEN%20SEE%20THIS.mp4";
 			String url3 = "http://wjdtmddnr24.dyndns.org/%EB%8F%99%EC%98%81%EC%83%81/PRIMAL%C3%97HEARTS%20OP%20-%20primal%20(320kbps).mp4";
 			String surl = "http://wjdtmddnr24.dyndns.org/%EC%B6%94%EA%B0%80%EC%A4%91%20%EC%95%A0%EB%8B%88/Subete%20ga%20F%20ni%20Naru/HorribleSubs%20Subete%20ga%20F%20ni%20Naru%20-%2004%201080p.mkv";
 
-			/* MediaView ±‚∫ª ºº∆√ */
 			mediaView.setPreserveRatio(true);
 			DoubleProperty mvw = mediaView.fitWidthProperty();
 			DoubleProperty mvh = mediaView.fitHeightProperty();
@@ -209,7 +204,6 @@ public class Main extends Application {
 
 			setupMedia(mediaView, url2);
 
-			/* ∏ﬁ¥∫ æ∆¿Ã≈€ º≥¡§ */
 			MenuBar menuBar = (MenuBar) scene.lookup("#menu");
 			menuBar.getMenus().add(createMenu());
 

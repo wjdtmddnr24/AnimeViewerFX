@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.ScrollPane?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml">
+	<center>
+	<ScrollPane fx:id="AnimeList" />	
+	</center>
+	<bottom>
+		<Button text="로컬 플레이어 실행" fx:id="LocalButton" />
+	</bottom>
+</BorderPane>
